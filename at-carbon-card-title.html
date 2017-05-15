@@ -1,5 +1,6 @@
 <link rel="import" href="../tangere/tangere.html" />
 <link rel="import" href="../at-theme/at-theme.html" />
+<link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
 
 <dom-module id="at-carbon-card-title">
   <template>
@@ -8,16 +9,38 @@
         display: block;
         box-sizing: border-box;
       }
+
+      .flex-container {
+        @apply(--layout-horizontal);
+      }
+
+      .card-title {
+        @apply(--layout-flex);
+        @apply(--at-form-label);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 40px;
+      }
+
+      .menu-button {        
+        align-self: right;
+      }
     </style>
     
-    <content></content>
+    <div class="flex-container">
+      <div class="card-title">[[title]]</div>
+      <at-carbon-menu-button icon="now:more" color="gray" class="menu-button"></at-carbon-menu-button>
+    </div>
   </template>
 </dom-module>
 <script>
   Polymer({
     is: "at-carbon-card-title",
     properties: {
-      
+      title: {
+        type: String,
+        value: ""
+      }
     },
     ready: function () {
 
