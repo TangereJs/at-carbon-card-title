@@ -1,9 +1,11 @@
 <link rel="import" href="../tangere/tangere.html" />
 <link rel="import" href="../at-theme/at-theme.html" />
+<link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
 
 <dom-module id="at-carbon-card-title">
   <template>
+    <style include="at-core-style-classes"></style>
     <style>
       :host {
         display: block;
@@ -16,19 +18,18 @@
 
       .card-title {
         @apply(--layout-flex);
-        @apply(--at-form-label);
-        font-size: 18px;
-        font-weight: 400;
+        @apply(--paper-font-caption);                
         line-height: 40px;
       }
 
       .menu-button {        
         align-self: right;
       }
+
     </style>
     
     <div class="flex-container">
-      <div class="card-title">[[title]]</div>
+      <div class="card-title mlsm">[[title]]</div>
       <at-carbon-menu-button icon="now:more" color="gray" class="menu-button"></at-carbon-menu-button>
     </div>
   </template>
