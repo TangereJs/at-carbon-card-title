@@ -18,34 +18,79 @@
 
       .card-title {
         @apply(--layout-flex);
-        @apply(--paper-font-caption); 
+        @apply(--paper-font-caption);
         opacity: var(--at-secondary-opacity);
         line-height: 40px;
       }
 
-      .menu-button {        
+      .menu-button {
         align-self: right;
       }
-
     </style>
-    
+
     <div class="flex-container">
       <div class="card-title mlsm">[[title]]</div>
-      <at-carbon-menu-button icon="now:more" color="gray" class="menu-button"></at-carbon-menu-button>
+      <at-carbon-menu-button
+        icon="now:more" 
+        color="gray" 
+        class="menu-button"
+        items="[[items]]"
+        value="[[value]]"
+        on-value-changed="_onMenuValueChanged"
+      ></at-carbon-menu-button>
     </div>
   </template>
 </dom-module>
 <script>
-  Polymer({
-    is: "at-carbon-card-title",
-    properties: {
-      title: {
-        type: String,
-        value: ""
-      }
+Polymer({
+  is: "at-carbon-card-title",
+  properties: {
+    title: {
+      type: String,
+      value: ""
     },
-    ready: function () {
 
-    }
-  });
+    items: {
+      type: Array,
+      value: function() {
+        return [];
+      },
+      schema: {
+        items: {
+          properties: {
+            title: {
+              type: String,
+              title: "Title",
+              "default": ""
+            },
+            value: {
+              type: String,
+              title: "Value",
+              "default": ""
+            },
+            icon: {
+              type: String,
+              title: "Icon",
+              "default": ""
+            }
+          }
+        }
+      },
+      xgridcols: "12"
+    },
+
+    value: {
+      type: String,
+      value: ""
+    }    
+  },
+
+  ready: function() {
+
+  },
+
+  _onMenuValueChanged: function(event) {
+    this.fire('value-changed', { value: event.detail.value }, { bubbles: false });
+  }
+});
 </script>

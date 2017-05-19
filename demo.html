@@ -1,15 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>at-carbon-card-title demo</title>
   <script src="../webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="at-carbon-card-title.html" />
   <style>
+  .card-border {
+    border: 1px solid black;
+    width: 400px;
+  }
   </style>
 </head>
+
 <body>
-    <div style="border:1px solid black;width:400px">
-        <at-carbon-card-title title="Approvals"></at-carbon-card-title>
-    </div>
+  <div class="card-border">
+    <at-carbon-card-title
+      id="cardTitle"
+      title="Approvals"
+    ></at-carbon-card-title>
+  </div>
+
+  <script>
+    document.addEventListener('WebComponentsReady', function() { 
+      var singleItem = [{
+        title: "Test 1",
+        value: "test1",
+        icon: "now:wrench"
+      }];
+
+      var twoItems = [{
+        title: "Test 1",
+        value: "test1",
+        icon: "now:wrench"
+      }, {
+        title: "Test 2",
+        value: "test2",
+        icon: "now:wrench"
+      }];
+
+      var cardTitle = document.getElementById('cardTitle');
+      cardTitle.items = singleItem;
+
+      cardTitle.addEventListener('value-changed', function(event){ 
+        console.log(event.detail.value + ' clicked. Yaaay!');
+        var value = event.detail.value;
+        
+        if (value === "test1") {
+          if (cardTitle.items.length === 1) {
+            cardTitle.items = twoItems;
+          } else {
+            cardTitle.items = singleItem;
+          }
+        } else if (value === "test2") {
+          alert(value + ' clicked.');
+        }
+
+      });
+    });
+  </script>
 </body>
+
 </html>
