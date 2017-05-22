@@ -16,49 +16,9 @@
 <body>
   <div class="card-border">
     <at-carbon-card-title
-      id="cardTitle"
       title="Approvals"
     ></at-carbon-card-title>
   </div>
-
-  <script>
-    document.addEventListener('WebComponentsReady', function() { 
-      var singleItem = [{
-        title: "Test 1",
-        value: "test1",
-        icon: "now:wrench"
-      }];
-
-      var twoItems = [{
-        title: "Test 1",
-        value: "test1",
-        icon: "now:wrench"
-      }, {
-        title: "Test 2",
-        value: "test2",
-        icon: "now:wrench"
-      }];
-
-      var cardTitle = document.getElementById('cardTitle');
-      cardTitle.items = singleItem;
-
-      cardTitle.addEventListener('value-changed', function(event){ 
-        console.log(event.detail.value + ' clicked. Yaaay!');
-        var value = event.detail.value;
-        
-        if (value === "test1") {
-          if (cardTitle.items.length === 1) {
-            cardTitle.items = twoItems;
-          } else {
-            cardTitle.items = singleItem;
-          }
-        } else if (value === "test2") {
-          alert(value + ' clicked.');
-        }
-
-      });
-    });
-  </script>
 </body>
 
 </html>
