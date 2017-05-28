@@ -44,53 +44,64 @@
   </template>
 </dom-module>
 <script>
-Polymer({
-  is: "at-carbon-card-title",
-  properties: {
-    title: {
-      type: String,
-      value: ""
-    }
-  },
-
-  ready: function() {
-    this.$.menuButton.items = this._getSingleItemMenu();
-  },
-
-  _getSingleItemMenu: function() {
-    return [{
-      title: "Test 1",
-      value: "test1",
-      icon: "now:wrench"
-    }];
-  },
-
-  _getTwoItemsMenu: function() {
-    return [{
-      title: "Test 1",
-      value: "test1",
-      icon: "now:wrench"
-    }, {
-      title: "Test 2",
-      value: "test2",
-      icon: "now:wrench"
-    }];
-  },
-
-  _onMenuValueChanged: function(event) {
-    var value = event.detail.value;
-    var menuButton = this.$.menuButton;
-    if (value === "test1") {
-      if (menuButton.items.length === 1) {
-        menuButton.items = this._getTwoItemsMenu();
-      } else {
-        menuButton.items = this._getSingleItemMenu();
+  Polymer({
+    is: "at-carbon-card-title",
+    properties: {
+      title: {
+        type: String,
+        value: ""
       }
-    } else if (value === "test2") {
-      alert(value + " clicked.");
-    }
+    },
 
-    this.fire('value-changed', { value: event.detail.value }, { bubbles: false });
-  }
-});
+    $meta: [{
+      title: "Card Title",
+      type: "element",
+      xtype: "at-carbon-card-title",
+      icon: "now:more"
+    }],
+
+    ready: function() {
+      this.$.menuButton.items = this._getSingleItemMenu();
+    },
+
+    _getSingleItemMenu: function() {
+      return [{
+        title: "Test 1",
+        value: "test1",
+        icon: "now:wrench"
+      }];
+    },
+
+    _getTwoItemsMenu: function() {
+      return [{
+        title: "Test 1",
+        value: "test1",
+        icon: "now:wrench"
+      }, {
+        title: "Test 2",
+        value: "test2",
+        icon: "now:wrench"
+      }];
+    },
+
+    _onMenuValueChanged: function(event) {
+      var value = event.detail.value;
+      var menuButton = this.$.menuButton;
+      if (value === "test1") {
+        if (menuButton.items.length === 1) {
+          menuButton.items = this._getTwoItemsMenu();
+        } else {
+          menuButton.items = this._getSingleItemMenu();
+        }
+      } else if (value === "test2") {
+        alert(value + " clicked.");
+      }
+
+      this.fire('value-changed', {
+        value: event.detail.value
+      }, {
+        bubbles: false
+      });
+    }
+  });
 </script>
