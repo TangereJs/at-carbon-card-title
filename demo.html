@@ -16,9 +16,18 @@
 <body>
   <div class="card-border">
     <at-carbon-card-title
-      title="Approvals"
+      label="Approvals"
+    ></at-carbon-card-title>
+    <at-carbon-card-title
+      id="programmatic"
     ></at-carbon-card-title>
   </div>
+  <script>
+    document.addEventListener('WebComponentsReady', function(){
+      var programmatic = document.getElementById('programmatic');
+      programmatic.label = "Lorem ipsum";
+    });
+  </script>
 </body>
 
 </html>
