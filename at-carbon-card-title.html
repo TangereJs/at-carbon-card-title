@@ -2,7 +2,6 @@
 <link rel="import" href="../at-theme/at-theme.html" />
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
-
 <dom-module id="at-carbon-card-title">
   <template>
     <style include="at-core-style-classes"></style>
@@ -18,7 +17,7 @@
 
       .card-label {
         @apply(--layout-flex);
-        @apply(--paper-font-caption);
+        @apply(--paper-font-body1);
         opacity: var(--at-secondary-opacity);
         line-height: 40px;
       }
@@ -27,19 +26,16 @@
         align-self: right;
       }
     </style>
-
     <div class="flex-container">
       <div class="card-label plsm">[[label]]</div>
-      <at-carbon-menu-button 
-        id="menuButton" 
-        icon="now:more" 
-        color="gray" 
-        class="menu-button" 
-        on-value-changed="_onMenuValueChanged"
-        position="bottomRight" 
-        x-offset="-8"
-        y-offset="-16"
-      ></at-carbon-menu-button>
+      <at-carbon-menu-button id="menuButton"
+                             icon="now:more"
+                             color="gray"
+                             class="menu-button"
+                             on-value-changed="_onMenuValueChanged"
+                             position="bottomRight"
+                             x-offset="-8"
+                             y-offset="-16"></at-carbon-menu-button>
     </div>
   </template>
 </dom-module>
@@ -50,7 +46,12 @@
       label: {
         type: String,
         value: ""
-      }
+      },
+      revealed: {
+        type: Boolean,
+        value: false,
+        observer: '_revealedChanged'
+      },
     },
 
     $meta: [{
@@ -60,11 +61,19 @@
       icon: "now:more"
     }],
 
-    ready: function() {
+    ready: function () {
       this.$.menuButton.items = this._getSingleItemMenu();
     },
 
-    _getSingleItemMenu: function() {
+    _revealedChanged: function (newValue, oldValue) {      
+      this.toggleAttribute('hidden', !newValue, this.$.menuButton);
+    },
+
+    actionListener: function (event) {
+      this._card = event.detail.model.state.model._card;
+      this.label = this._card.Title;     
+    },
+    _getSingleItemMenu: function () {
       return [{
         title: "Test 1",
         value: "test1",
@@ -72,7 +81,7 @@
       }];
     },
 
-    _getTwoItemsMenu: function() {
+    _getTwoItemsMenu: function () {
       return [{
         title: "Test 1",
         value: "test1",
@@ -84,7 +93,7 @@
       }];
     },
 
-    _onMenuValueChanged: function(event) {
+    _onMenuValueChanged: function (event) {
       var value = event.detail.value;
       var menuButton = this.$.menuButton;
       if (value === "test1") {
