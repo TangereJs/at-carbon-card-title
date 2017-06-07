@@ -65,7 +65,8 @@
       this.$.menuButton.items = this._getSingleItemMenu();
     },
 
-    _revealedChanged: function (newValue, oldValue) {      
+    _revealedChanged: function (newValue, oldValue) {     
+      if(!newValue) this.$.menuButton.open = false;
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
     },
 
