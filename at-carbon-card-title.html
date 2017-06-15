@@ -6,7 +6,7 @@
   <template>
     <style include="at-core-style-classes"></style>
     <style>
-      :host {
+       :host {
         display: block;
         box-sizing: border-box;
       }
@@ -28,14 +28,7 @@
     </style>
     <div class="flex-container">
       <div class="card-label plsm">[[label]]</div>
-      <at-carbon-menu-button id="menuButton"
-                             icon="now:more"
-                             color="gray"
-                             class="menu-button"
-                             on-value-changed="_onMenuValueChanged"
-                             position="bottomRight"
-                             x-offset="-8"
-                             y-offset="-16"></at-carbon-menu-button>
+      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-value-changed="_onMenuValueChanged" position="bottomRight" x-offset="-8" y-offset="-16"></at-carbon-menu-button>
     </div>
   </template>
 </dom-module>
@@ -61,20 +54,20 @@
       icon: "now:more"
     }],
 
-    ready: function () {
+    ready: function() {
       this.$.menuButton.items = this._getSingleItemMenu();
     },
 
-    _revealedChanged: function (newValue, oldValue) {     
-      if(!newValue) this.$.menuButton.open = false;
+    _revealedChanged: function(newValue, oldValue) {
+      if (!newValue) this.$.menuButton.open = false;
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
     },
 
-    actionListener: function (event) {
+    actionListener: function(event) {
       this._card = event.detail.model.state.model._card;
-      this.label = this._card.Title;     
+      this.label = this._card.Title;
     },
-    _getSingleItemMenu: function () {
+    _getSingleItemMenu: function() {
       return [{
         title: "Test 1",
         value: "test1",
@@ -82,7 +75,7 @@
       }];
     },
 
-    _getTwoItemsMenu: function () {
+    _getTwoItemsMenu: function() {
       return [{
         title: "Test 1",
         value: "test1",
@@ -94,7 +87,7 @@
       }];
     },
 
-    _onMenuValueChanged: function (event) {
+    _onMenuValueChanged: function(event) {
       var value = event.detail.value;
       var menuButton = this.$.menuButton;
       if (value === "test1") {
