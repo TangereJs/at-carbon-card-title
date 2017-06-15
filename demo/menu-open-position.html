@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>at-carbon-card-title demo page</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../at-theme/at-theme.html">
+  <link rel="import" href="../at-carbon-card-title.html">
+  
+  <style is="custom-style">
+    .demo-container {
+      margin-top: 250px;
+      padding: 0 25%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="demo-container">
+    <at-carbon-card-title revealed label="Menu opens on the bottom" position="bottom"></at-carbon-card-title>    
+  </div>
+  <div class="demo-container">
+    <at-carbon-card-title revealed label="Menu opens on the top" position="top"></at-carbon-card-title>
+  </div>
+  
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      
+    });
+  </script>
+</body>
+
+</html>
