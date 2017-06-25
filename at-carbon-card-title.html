@@ -2,6 +2,8 @@
 <link rel="import" href="../at-theme/at-theme.html" />
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
+<link rel="import" href="../at-core-activity/at-core-activity.html">
+
 <dom-module id="at-carbon-card-title">
   <template>
     <style include="at-core-style-classes"></style>
@@ -30,6 +32,7 @@
       <div class="card-label plsm">[[label]]</div>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-16"></at-carbon-menu-button>
     </div>
+    <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
   </template>
 </dom-module>
 <script>
@@ -72,8 +75,21 @@
       return "topRight";
     },
 
+    _apiCall: function (url,data) {
+      var req = this.$.api;
+      req.url = url;
+      req.body = data;
+      req.method = "POST";
+      req.contentType = "application/json";
+      req.generateRequest();
+    },
+
+    _apiCallback: function(e) {
+      // currently not really needed
+    },
+
     ready: function() {
-      this.$.menuButton.items = this._getSingleItemMenu();
+      
     },
 
     _revealedChanged: function(newValue, oldValue) {
@@ -81,41 +97,52 @@
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
     },
 
-    actionListener: function(event) {
-      this._card = event.detail.model.state.model._card;
+    actionListener: function (event) {
+      var model = event.detail.model.state.model;
+      this._container = model._container;
+      this._card = model._card;
       this.label = this._card.Title;
-    },
-    _getSingleItemMenu: function() {
-      return [{
-        title: "Test 1",
-        value: "test1",
-        icon: "now:wrench"
-      }];
+      this._buildMenu();
     },
 
-    _getTwoItemsMenu: function() {
-      return [{
-        title: "Test 1",
-        value: "test1",
-        icon: "now:wrench"
-      }, {
-        title: "Test 2",
-        value: "test2",
-        icon: "now:wrench"
-      }];
+    _buildMenu: function () {
+      var menu = [];
+
+      if (this._container == "now") {
+        menu.push(
+          { title: "Dismiss", value: "dismiss", icon: "now:wrench" }
+        );
+      }
+
+      menu.push(
+         { title: "Subscribe", value: "subscribe", icon: "now:wrench" }
+       );
+
+      // check this._card.UserActions.pinnable ? 
+      menu.push(
+        { title: "Pin to workplace", value: "pin", icon: "now:pin" }
+      );
+
+      this.$.menuButton.items = menu;
     },
 
-    _onMenuValueChanged: function(event) {
+    _onMenuValueChanged: function (event) {
+
       var value = event.detail.value;
       var menuButton = this.$.menuButton;
-      if (value === "test1") {
-        if (menuButton.items.length === 1) {
-          menuButton.items = this._getTwoItemsMenu();
-        } else {
-          menuButton.items = this._getSingleItemMenu();
-        }
-      } else if (value === "test2") {
-        alert(value + " clicked.");
+
+      if (value == "dismiss") {        
+        this.fire('at-core-card-swipe-away', { id: this._card.Id, dir: "menu" });
+      }
+
+      if (value == "subscribe") {
+        var data = { id: this._card.UserActions.cardId, subscription: false };
+        this._apiCall("/api/adenin.GateKeeper.Subscription", data);
+      }
+
+      if (value == "pin") {       
+        var data = { id: this._card.UserActions.cardId, pinned: true };
+        this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
       }
 
       this.fire('value-changed', {
@@ -123,6 +150,9 @@
       }, {
         bubbles: false
       });
+
+      event.detail.value = "";  // reset selection
+      this._buildMenu();        // rebuild menu based on new state
     }
   });
 </script>
