@@ -30,7 +30,7 @@
     </style>
     <div class="flex-container">
       <div class="card-label plsm">[[label]]</div>
-      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-16"></at-carbon-menu-button>
+      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="8" y-offset="-8"></at-carbon-menu-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
   </template>
@@ -71,7 +71,6 @@
       if (position === "bottom") {
         return "bottomRight";
       }
-      this.$.menuButton.yOffset = 12;
       return "topRight";
     },
 
