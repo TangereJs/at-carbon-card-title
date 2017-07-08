@@ -29,7 +29,7 @@
     </style>
     <div class="flex-container">
       <div class="card-label plsm">[[label]]</div>
-      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-8"></at-carbon-menu-button>
+      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-8"></at-carbon-menu-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
   </template>
@@ -101,6 +101,11 @@
       this._card = model._card;
       this.label = this._card.Title;
       this._buildMenu();
+    },
+
+    _menuButtonOpenChanged: function (e) {
+      // update active state on container     
+      this.fire("card-active", e.detail, { bubbles: true });
     },
 
     _buildMenu: function () {
