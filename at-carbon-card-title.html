@@ -67,10 +67,11 @@
     }],
 
     _computePosition: function(position) {
+      // menu position is the inverse of the title position
       if (position === "bottom") {
-        return "bottomRight";
+        return "topRight";
       }
-      return "topRight";
+      return "bottomRight";
     },
 
     _apiCall: function (url,data) {
