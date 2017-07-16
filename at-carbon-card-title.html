@@ -3,6 +3,7 @@
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
 <link rel="import" href="../at-core-activity/at-core-activity.html">
+<link rel="import" href="../at-link/at-link.html">
 
 <dom-module id="at-carbon-card-title">
   <template>
@@ -32,6 +33,7 @@
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-8"></at-carbon-menu-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
+    <at-link id="link" style="display:none"></at-link>
   </template>
 </dom-module>
 <script>
@@ -47,14 +49,47 @@
         value: false,
         observer: '_revealedChanged'
       },
+      links: {
+        type: Array,
+        value: function() {
+          return [];
+        },
+        schema: {
+          items: {
+            properties: {
+              title: {
+                type: String,
+                title: "Title",
+                "default": ""
+              },
+              url: {
+                type: String,
+                title: "Url",
+                "default": ""
+              },
+              icon: {
+                type: String,
+                title: "Icon",
+                "default": ""
+              }
+            }
+          }
+        },
+        xgridcols: "12"
+      },
 
       position: {
         type: String,
         value: 'top',
         xtype: 'enum',
-        xvaluelist: [
-          { title: "Top", value: "top" },
-          { title: "Bottom", value: "bottom" }
+        xvaluelist: [{
+            title: "Top",
+            value: "top"
+          },
+          {
+            title: "Bottom",
+            value: "bottom"
+          }
         ]
       }
     },
@@ -74,7 +109,7 @@
       return "bottomRight";
     },
 
-    _apiCall: function (url,data) {
+    _apiCall: function(url, data) {
       var req = this.$.api;
       req.url = url;
       req.body = data;
@@ -88,7 +123,7 @@
     },
 
     ready: function() {
-      
+
     },
 
     _revealedChanged: function(newValue, oldValue) {
@@ -96,7 +131,7 @@
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
     },
 
-    actionListener: function (event) {
+    actionListener: function(event) {
       var model = event.detail.model.state.model;
       this._container = model._container;
       this._card = model._card;
@@ -104,48 +139,85 @@
       this._buildMenu();
     },
 
-    _menuButtonOpenChanged: function (e) {
+    _menuButtonOpenChanged: function(e) {
       // update active state on container     
-      this.fire("card-active", e.detail, { bubbles: true });
+      this.fire("card-active", e.detail, {
+        bubbles: true
+      });
     },
 
-    _buildMenu: function () {
+    _buildMenu: function() {
       var menu = [];
-
+     
       if (this._container == "now") {
-        menu.push(
-          { title: "Dismiss", value: "dismiss", icon: "now:wrench" }
-        );
+        menu.push({
+          title: "Dismiss",
+          value: "dismiss",
+          icon: "now:wrench"
+        });
       }
 
-      menu.push(
-         { title: "Subscribe", value: "subscribe", icon: "now:wrench" }
-       );
+      menu.push({
+        title: "Subscribe",
+        value: "subscribe",
+        icon: "now:wrench"
+      });
 
       // check this._card.UserActions.pinnable ? 
-      menu.push(
-        { title: "Pin to workplace", value: "pin", icon: "now:pin" }
-      );
+      menu.push({
+        title: "Pin to workplace",
+        value: "pin",
+        icon: "now:pin"
+      });
+      
+      var c=0;
+      for(c=0;c<this.links.length;c++) {       
+        var litem = this.links[c];
+        menu.push({
+        title: litem.title,
+        value: "link-" + c,
+        icon: litem.icon
+      });
+      }
 
       this.$.menuButton.items = menu;
     },
 
-    _onMenuValueChanged: function (event) {
+    _onMenuValueChanged: function(event) {
 
       var value = event.detail.value;
       var menuButton = this.$.menuButton;
 
-      if (value == "dismiss") {        
-        this.fire('at-core-card-swipe-away', { id: this._card.Id, dir: "menu" });
+      // use hidden link to open additional link
+      // *todo* create mixin for link handling
+      if (value.indexOf("link-") == 0) {      
+        var idx = parseInt(value.substring(5));
+        var link = this.links[idx];
+        this.$.link.href = link.url;
+        this.$.link.label = link.title;
+        this.$.link._handleLink();
+      }
+
+      if (value == "dismiss") {
+        this.fire('at-core-card-swipe-away', {
+          id: this._card.Id,
+          dir: "menu"
+        });
       }
 
       if (value == "subscribe") {
-        var data = { id: this._card.UserActions.cardId, subscription: false };
+        var data = {
+          id: this._card.UserActions.cardId,
+          subscription: false
+        };
         this._apiCall("/api/adenin.GateKeeper.Subscription", data);
       }
 
-      if (value == "pin") {       
-        var data = { id: this._card.UserActions.cardId, pinned: true };
+      if (value == "pin") {
+        var data = {
+          id: this._card.UserActions.cardId,
+          pinned: true
+        };
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
       }
 
@@ -155,8 +227,9 @@
         bubbles: false
       });
 
-      event.detail.value = "";  // reset selection
-      this._buildMenu();        // rebuild menu based on new state
+      event.detail.value = ""; // reset selection     
+      this._buildMenu(); // rebuild menu based on new state
     }
   });
+
 </script>
