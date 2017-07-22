@@ -4,6 +4,7 @@
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
 <link rel="import" href="../at-core-activity/at-core-activity.html">
 <link rel="import" href="../at-link/at-link.html">
+<link rel="import" href="../at-carbon-moment/at-carbon-moment.html">
 
 <dom-module id="at-carbon-card-title">
   <template>
@@ -29,7 +30,7 @@
       }
     </style>
     <div class="flex-container">
-      <div class="card-label plsm">[[label]]</div>
+      <div class="card-label plsm">[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-8"></at-carbon-menu-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
@@ -137,6 +138,17 @@
       this._card = model._card;
       this.label = this._card.Title;
       this._buildMenu();
+
+      if (this._container == "now") {
+        var ts = document.createElement("at-carbon-moment");
+        ts.datetime = this._card.UpdateDate;
+        ts.utc=true;
+        ts.fromNow=true;
+        ts.ago=true;
+        ts.autoRefreshRate = 10;
+        ts.className += " inline"
+        Polymer.dom(this.$.ago).appendChild(ts);        
+      }
     },
 
     _menuButtonOpenChanged: function(e) {
@@ -148,7 +160,8 @@
 
     _buildMenu: function() {
       var menu = [];
-     
+       
+
       if (this._container == "now") {
         menu.push({
           title: "Dismiss",
