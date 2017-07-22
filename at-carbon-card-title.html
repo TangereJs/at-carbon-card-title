@@ -153,23 +153,37 @@
         menu.push({
           title: "Dismiss",
           value: "dismiss",
-          icon: "now:wrench"
+          icon: "now:cancel"
         });
       }
 
-      menu.push({
-        title: "Subscribe",
-        value: "subscribe",
-        icon: "now:wrench"
-      });
+      if (this._card.UserActions.hasNotifications) {
+        if (this._container == "now") {
+          // *todo* unsubscribe        
+        } else {
+          // *todo* don't show unsubscribe when user already subscribed
+          menu.push({
+            title: "Subscribe",
+            value: "subscribe",
+            icon: "now:alert"
+          });
+        }
+      }
 
-      // check this._card.UserActions.pinnable ? 
-      menu.push({
-        title: "Pin to workplace",
-        value: "pin",
-        icon: "now:pin"
-      });
-      
+      if (this._card.UserActions.pinnable) {
+
+        if (this._container == "workplace") {
+          // *todo* unpin
+        } else {
+          menu.push({
+            title: "Pin to workplace",
+            value: "pin",
+            icon: "now:pin"
+          });
+        }
+
+      }
+
       var c=0;
       for(c=0;c<this.links.length;c++) {       
         var litem = this.links[c];
