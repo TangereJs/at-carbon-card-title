@@ -186,7 +186,11 @@
       if (this._card.UserActions.pinnable) {
 
         if (this._container == "workplace") {
-          // *todo* unpin
+          menu.push({
+            title: "Unpin from workplace",
+            value: "unpin",
+            icon: "now:cancel"
+          });
         } else {
           menu.push({
             title: "Pin to workplace",
@@ -240,10 +244,10 @@
         this._apiCall("/api/adenin.GateKeeper.Subscription", data);
       }
 
-      if (value == "pin") {
+      if (value == "pin" || value == "unpin") {
         var data = {
           id: this._card.UserActions.cardId,
-          pinned: true
+          pinned: value == "pin"
         };
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
       }
