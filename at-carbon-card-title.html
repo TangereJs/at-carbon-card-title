@@ -2,6 +2,7 @@
 <link rel="import" href="../at-theme/at-theme.html" />
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
+<link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html" />
 <link rel="import" href="../at-core-activity/at-core-activity.html">
 <link rel="import" href="../at-link/at-link.html">
 <link rel="import" href="../at-carbon-moment/at-carbon-moment.html">
@@ -31,6 +32,7 @@
     </style>
     <div class="flex-container">
       <div class="card-label plsm">[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>
+      <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-8"></at-carbon-menu-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
@@ -127,9 +129,13 @@
 
     },
 
-    _revealedChanged: function(newValue, oldValue) {
+    _revealedChanged: function (newValue, oldValue) {
+      
       if (!newValue) this.$.menuButton.open = false;
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
+      
+      var showDismiss = newValue && this._container == "now" && Tangere.session.browser.desktop;
+      this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);
     },
 
     actionListener: function(event) {
@@ -151,6 +157,12 @@
       }
     },
 
+    _dismiss: function(e) {     
+      this.fire('at-core-card-swipe-away', {
+        id: this._card.Id,
+        dir: "menu"
+      });
+    },
     _menuButtonOpenChanged: function(e) {
       // update active state on container     
       this.fire("card-active", e.detail, {
