@@ -285,8 +285,7 @@
         if (this._container == "workplace" && value == "unpin") {
           this.fire('workplace-unpin-card', {
             id: this._card.Id
-          }, { bubbles: true });
-          debugger;
+          }, { bubbles: true });          
         }
 
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
