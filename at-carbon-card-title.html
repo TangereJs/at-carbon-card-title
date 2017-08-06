@@ -281,6 +281,14 @@
           id: this._card.UserActions.cardId,
           pinned: value == "pin"
         };
+
+        if (this._container == "workplace" && value == "unpin") {
+          this.fire('workplace-unpin-card', {
+            id: this._card.Id
+          }, { bubbles: true });
+          debugger;
+        }
+
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
       }
 
