@@ -198,7 +198,8 @@
         menu.push({
           title: "Dismiss",
           value: "dismiss",
-          icon: "now:cancel"
+          icon: "now:cancel",
+          "class": "card-action-dismiss"
         });
       }
 
@@ -210,7 +211,8 @@
           menu.push({
             title: "Subscribe",
             value: "subscribe",
-            icon: "now:alert"
+            icon: "now:alert",
+            "class": "card-action-subscribe"
           });
         }
       }
@@ -221,13 +223,15 @@
           menu.push({
             title: this.T("Unpin from workplace"),
             value: "unpin",
-            icon: "now:cancel"
+            icon: "now:cancel",
+            "class": "card-action-unpin"
           });
         } else {
           menu.push({
             title: this.T("Pin {0} to workplace", this._card.Title),
             value: "pin",
-            icon: "now:pin"
+            icon: "now:pin",
+            "class": "card-action-pin"
           });
         }
 
