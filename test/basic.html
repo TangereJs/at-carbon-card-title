@@ -1,0 +1,366 @@
+<!doctype html>
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>at-carbon-card-title tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../at-carbon-card-title.html">
+  <link rel="import" href="../../iron-test-helpers/iron-test-helpers.html" />
+
+</head>
+<body>
+
+  <!-- initial state -->
+  <test-fixture id="initialState">
+    <template>
+      <at-carbon-card-title></at-carbon-card-title>
+    </template>
+  </test-fixture>
+  
+  <!-- label is set -->
+  <test-fixture id="labelIsSet">
+    <template>
+      <at-carbon-card-title label="lorem ipsum"></at-carbon-card-title>
+    </template>
+  </test-fixture>
+
+  <!-- revealed is set -->
+  <test-fixture id="revealedIsSet">
+    <template>
+      <at-carbon-card-title revealed></at-carbon-card-title>
+    </template>
+  </test-fixture>
+
+  <!-- revealed is set -->
+  <test-fixture id="linksAreSet">
+    <template>
+      <at-carbon-card-title links='[ { "title": "Title 1", "url": "www.url1.com", "icon": "now:wrench" }, { "title": "Title 2", "url": "www.url2.com", "icon": "now:wrench" }, { "title": "Title 3", "url": "www.url3.com", "icon": "now:wrench" } ]'></at-carbon-card-title>
+    </template>
+  </test-fixture>  
+
+  <!-- position is set -->
+  <test-fixture id="positionIsSet">
+    <template>
+      <at-carbon-card-title position="bottom"></at-carbon-card-title>
+    </template>
+  </test-fixture>
+
+  <!-- property test -->
+  <test-fixture id="propertyTest">
+    <template>
+      <at-carbon-card-title></at-carbon-card-title>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('basic', function() {
+
+      function assertPropertyValue(el, pName, pValue) {
+        assert.equal(el[pName], pValue);
+      }
+
+      function assertPropertyValueDeep(el, pName, pValue) {
+        assert.deepEqual(el[pName], pValue); 
+      }
+
+      function assertAttributeValue(el, attrName, attrValue) {
+        var attr = el.getAttribute(attrName);
+        assert.equal(attr, attrValue);
+      }
+
+      function getComputedStyleValue(el, pName) {
+        var cmpStyle = window.getComputedStyle(el);
+        return cmpStyle.getPropertyValue(pName);
+      }
+
+      function getQueryRoot(el) {        
+        return el.shadowRoot || el;
+      }
+
+      var labelValue = 'lorem ipsum';
+      var iconBlank = 'now:blank';
+      var iconCancel = 'now:cancel';
+      var links = [ { "title": "Title 1", "url": "www.url1.com", "icon": "now:wrench" }, { "title": "Title 2", "url": "www.url2.com", "icon": "now:wrench" }, { "title": "Title 3", "url": "www.url3.com", "icon": "now:wrench" } ];
+
+      suite('tests where properties are set as attributes', function() {
+        
+        test('test initial state', function() {
+          var el = fixture('initialState');
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('label is set', function() {
+          var el = fixture('labelIsSet');
+
+          assertPropertyValue(el, 'label', labelValue);
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', labelValue);
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);          
+        });
+
+        test('revealed is set', function() {
+          var el = fixture('revealedIsSet');
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', true);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', null);
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('links are set', function() {
+          var el = fixture('linksAreSet');
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', links);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+        
+        test('position is set', function() {
+          var el = fixture('positionIsSet');
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'bottom');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'topRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('menu items when links are set', function() {
+          var el = fixture('linksAreSet');
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', links);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+
+          el._card = {};
+          el._buildMenu();
+          var convLinks = [];
+          links.forEach(function(link, index){ 
+            convLinks.push({
+              title: link.title,
+              value: 'link-'+index,
+              icon: link.icon
+            });
+          });
+          assertPropertyValueDeep(el.$.menuButton, 'items', convLinks);
+
+        });
+      });
+
+      suite('tests were properties are set in code', function() {
+        
+        function assertInitialState(el) {
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        }
+
+        test('test initial state', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+        });
+
+        test('label is set', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+
+          el.label = labelValue;
+          assertPropertyValue(el, 'label', labelValue);
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', labelValue);
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('revelaed is set', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+
+          el.revealed = true;
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', true);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', null);
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('links is set', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+
+          el.links = links;
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', links);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('position is set', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+
+          el.position = 'bottom';
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', []);
+          assertPropertyValue(el, 'position', 'bottom');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'topRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+        });
+
+        test('menu items when links are set', function() {
+          var el = fixture('propertyTest');
+          assertInitialState(el);
+
+          el.links = links;
+
+          assertPropertyValue(el, 'label', '');
+          assertPropertyValue(el, 'revealed', false);
+          assertPropertyValueDeep(el, 'links', links);
+          assertPropertyValue(el, 'position', 'top');
+
+          var labelEl = getQueryRoot(el).querySelector('.card-label');
+          assertPropertyValue(labelEl, 'textContent', '');
+
+          assertAttributeValue(el.$.menuButton, 'hidden', '');
+          assertPropertyValueDeep(el.$.menuButton, 'items', []);
+          assertPropertyValue(el.$.menuButton, 'position', 'bottomRight');
+
+          assertAttributeValue(el.$.dismissButton, 'hidden', '');
+          assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
+
+          el._card = {};
+          el._buildMenu();
+          var convLinks = [];
+          links.forEach(function(link, index){ 
+            convLinks.push({
+              title: link.title,
+              value: 'link-'+index,
+              icon: link.icon
+            });
+          });
+          assertPropertyValueDeep(el.$.menuButton, 'items', convLinks);
+        });
+
+      });
+
+    });
+  </script>
+</body>
+</html>
