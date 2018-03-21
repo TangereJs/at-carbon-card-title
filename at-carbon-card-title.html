@@ -1,5 +1,4 @@
 <link rel="import" href="../tangere/tangere.html" />
-<link rel="import" href="../at-theme/at-theme.html" />
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
 <link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html" />
@@ -17,12 +16,7 @@
         box-sizing: border-box;
       }
 
-      .flex-container {
-        @apply(--layout-horizontal);
-      }
-
       .card-label {
-        @apply(--layout-flex);
         @apply(--paper-font-subhead);
         line-height: 40px;
       }
@@ -37,8 +31,8 @@
       }
 
     </style>
-    <div class="flex-container">
-      <div class="card-label pl">[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>      
+    <div class="layout-horizontal">
+      <div class="layout-flex card-label pl">[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-24"></at-carbon-menu-button>
       <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
     </div>
