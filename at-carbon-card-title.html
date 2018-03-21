@@ -30,7 +30,7 @@
       .menu-button {
         align-self: right;
       }
-      
+
       #dismissButton, #menuButton {
         width: 32px;
         height: 32px;
@@ -140,10 +140,10 @@
     },
 
     _revealedChanged: function (newValue, oldValue) {
-      
+
       if (!newValue) this.$.menuButton.open = false;
       this.toggleAttribute('hidden', !newValue, this.$.menuButton);
-      
+
       var showDismiss = newValue && this._container == "now" && Tangere.session.browser.desktop;
       if (this.$.menuButton.open) {
         showDismiss = this._container == "now" && Tangere.session.browser.desktop;
@@ -169,11 +169,11 @@
         ts.ago=true;
         ts.autoRefreshRate = 10;
         ts.className += " inline"
-        Polymer.dom(this.$.ago).appendChild(ts);        
+        Polymer.dom(this.$.ago).appendChild(ts);
       }
     },
 
-    _dismiss: function(e) {     
+    _dismiss: function(e) {
       this.fire('at-core-card-swipe-away', {
         id: this._card.Id,
         dir: "menu"
@@ -205,7 +205,7 @@
 
       if (this._card.UserActions.hasNotifications) {
         if (this._container == "now") {
-          // *todo* unsubscribe        
+          // *todo* unsubscribe
         } else {
           // *todo* don't show unsubscribe when user already subscribed
           menu.push({
@@ -218,7 +218,7 @@
       }
 
       if (this._card.UserActions.pinnable) {
- 
+
         if (this._container == "workplace") {
           menu.push({
             title: this.T("Unpin from workplace"),
@@ -238,7 +238,7 @@
       }
 
       var c=0;
-      for(c=0;c<this.links.length;c++) {       
+      for(c=0;c<this.links.length;c++) {
         var litem = this.links[c];
         menu.push({
         title: litem.title,
@@ -257,7 +257,7 @@
 
       // use hidden link to open additional link
       // *todo* create mixin for link handling
-      if (value.indexOf("link-") == 0) {      
+      if (value.indexOf("link-") == 0) {
         var idx = parseInt(value.substring(5));
         var link = this.links[idx];
         this.$.link.href = link.url;
@@ -289,7 +289,7 @@
         if (this._container == "workplace" && value == "unpin") {
           this.fire('workplace-unpin-card', {
             id: this._card.Id
-          }, { bubbles: true });          
+          }, { bubbles: true });
         }
 
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
@@ -301,7 +301,7 @@
         bubbles: false
       });
 
-      event.detail.value = ""; // reset selection     
+      event.detail.value = ""; // reset selection
       this._buildMenu(); // rebuild menu based on new state
     }
   });
