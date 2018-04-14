@@ -37,7 +37,7 @@
       <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
     </div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
-    <at-link id="link" style="display:none"></at-link>
+    <at-link id="link" style="display:none"></at-link>   
   </template>
 </dom-module>
 <script>
@@ -55,6 +55,11 @@
         type: Boolean,
         value: false,
         observer: '_revealedChanged'
+      },
+      customizable: {
+        type: Boolean,
+        value: false,
+        label: "Customizable"
       },
       links: {
         type: Array,
@@ -231,6 +236,16 @@
 
       }
 
+    
+      if (this.customizable) {
+        menu.push({
+          title: this.T("Customize {0}", this._card.Title),
+          value: "customize",
+          icon: "now:edit",
+          "class": "card-action-customize"
+        });
+      }
+
       var c=0;
       for(c=0;c<this.links.length;c++) {
         var litem = this.links[c];
@@ -272,6 +287,15 @@
           subscription: false
         };
         this._apiCall("/api/adenin.GateKeeper.Subscription", data);
+      }
+
+      if (value == "customize") {
+        var args = {};
+        args.elementName = "at-form-complex/at-form-complex";
+        args.schemaUrl = "customize.form";
+        args.modelPath = "_settings";
+        var arg = { action: "modal", args: args };
+        this.fire("action", arg);
       }
 
       if (value == "pin" || value == "unpin") {
