@@ -61,6 +61,11 @@
         value: false,
         label: "Customizable"
       },
+      customizeLabel: {
+        type: String,
+        value: "Customize",
+        label: "Label for Customize action"
+      },
       links: {
         type: Array,
         value: function() {
@@ -239,7 +244,7 @@
     
       if (this.customizable) {
         menu.push({
-          title: this.T("Customize {0}", this._card.Title),
+          title: this.T(this.customizeLabel),
           value: "customize",
           icon: "now:edit",
           "class": "card-action-customize"
