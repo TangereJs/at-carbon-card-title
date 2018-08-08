@@ -172,7 +172,7 @@
         ts.fromNow=true;
         ts.ago=true;
         ts.autoRefreshRate = 10;
-        ts.className += " inline"
+        Polymer.dom(ts).classList.add("inline");
         Polymer.dom(this.$.ago).appendChild(ts);
       }
     },
