@@ -1,11 +1,13 @@
 <link rel="import" href="../tangere/tangere.html" />
 <link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 <link rel="import" href="../at-carbon-menu-button/at-carbon-menu-button.html" />
+<link rel="import" href="../at-carbon-icon/at-carbon-icon.html" />
 <link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html" />
 <link rel="import" href="../at-core-activity/at-core-activity.html">
 <link rel="import" href="../at-link/at-link.html">
 <link rel="import" href="../at-carbon-moment/at-carbon-moment.html">
 <link rel="import" href="../at-i18n/at-i18n-behavior.html">
+<link rel="import" href="../tangere/model-bind-behavior.html">
 
 <dom-module id="at-carbon-card-title">
   <template>
@@ -35,10 +37,14 @@
 
     </style>
     <div class="layout-horizontal">
-      <div class="layout-flex card-label pl">[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>
-      <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-24"></at-carbon-menu-button>
-      <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
-    </div>
+     
+        <div class="layout-flex card-label pl">
+          <template is="dom-if" if="[[icon]]">
+            <at-carbon-icon icon="[[icon]]" class$="[[iconColor]] prsm"></at-carbon-icon>
+          </template>[[label]]<span id="ago" class="pl font-caption text-secondary"></span></div>
+        <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-24"></at-carbon-menu-button>
+        <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
+</div>
     <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
     <at-link id="link" style="display:none"></at-link>   
   </template>
@@ -47,9 +53,18 @@
   Polymer({
     is: "at-carbon-card-title",
     behaviors: [
-      Tangere.behaviors.i18n
+      Tangere.behaviors.i18n,
+      Tangere.behaviors.modelBind
     ],
     properties: {
+      icon: {
+        type: String,
+        value: ""
+      },
+      iconColor: {
+        type: String,
+        value: ""
+      },
       label: {
         type: String,
         value: ""
@@ -178,6 +193,11 @@
         Polymer.dom(ts).classList.add("inline");
         Polymer.dom(this.$.ago).appendChild(ts);
       }
+
+
+      // trigger modelBind
+      this._updateModel(event.detail.model.state.model);
+
     },
 
     _dismiss: function(e) {

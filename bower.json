@@ -1,6 +1,6 @@
 {
   "name": "at-carbon-card-title",
-  "version": "1.0.0.197",
+  "version": "1.0.0.207",
   "private": true,
   "dependencies": {
     "tangere": "TangereJs/tangere#master",
