@@ -42,8 +42,10 @@
           <at-carbon-icon icon="[[icon]]" class$="[[iconColor]] prsm"></at-carbon-icon>
         </template>[[label]]<span id="ago" class="pl font-caption text-secondary"></span>
       </div>
-      <at-carbon-icon-button id="restoreButton" icon="now:plus" color="blue" on-click="_handleRestoreButtonClick" hidden></at-carbon-icon-button>
-      <at-carbon-icon-button id="minimizeButton" icon="now:minus" color="blue" on-click="_handleMinimizeButtonClick"></at-carbon-icon-button>
+      <div id="sizeButtonsContainer" hidden>
+        <at-carbon-icon-button id="restoreButton" icon="now:plus" color="blue" on-click="_handleRestoreButtonClick" hidden></at-carbon-icon-button>
+        <at-carbon-icon-button id="minimizeButton" icon="now:minus" color="blue" on-click="_handleMinimizeButtonClick"></at-carbon-icon-button>
+      </div>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-24"></at-carbon-menu-button>
       <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
     </div>
@@ -176,6 +178,8 @@
         this.$.dismissButton.icon = "now:cancel";
       }
       this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);
+
+      this.toggleAttribute('hidden', !newValue, this.$.sizeButtonsContainer);
     },
 
     actionListener: function(event) {
