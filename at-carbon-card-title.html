@@ -179,7 +179,9 @@
       }
       this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);
 
-      this.toggleAttribute('hidden', !newValue, this.$.sizeButtonsContainer);
+      if (this._container == "workplace") {
+        this.toggleAttribute('hidden', !newValue, this.$.sizeButtonsContainer);
+      }
     },
 
     actionListener: function(event) {
