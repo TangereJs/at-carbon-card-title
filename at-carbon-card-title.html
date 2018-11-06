@@ -364,6 +364,12 @@
       this.toggleAttribute('hidden', true, this.$.minimizeButton);
       this.toggleAttribute('hidden', false, this.$.restoreButton);
 
+      var data = {
+        id: this._card.Id,
+        minimized: true,
+      };
+      this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
+
       this.fire('card-display-size-changed', {
         value: 'minimized'
       }, {
@@ -374,6 +380,12 @@
     _handleRestoreButtonClick: function(event) {
       this.toggleAttribute('hidden', false, this.$.minimizeButton);
       this.toggleAttribute('hidden', true, this.$.restoreButton);
+
+      var data = {
+        id: this._card.Id,
+        minimized: false,
+      };
+      this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
 
       this.fire('card-display-size-changed', {
         value: 'normal'
