@@ -43,8 +43,8 @@
         </template>[[label]]<span id="ago" class="pl font-caption text-secondary"></span>
       </div>
       <div id="sizeButtonsContainer" hidden>
-        <at-carbon-icon-button id="restoreButton" icon="now:plus" color="gray" on-click="_handleRestoreButtonClick" hidden></at-carbon-icon-button>
-        <at-carbon-icon-button id="minimizeButton" icon="now:minus" color="gray" on-click="_handleMinimizeButtonClick"></at-carbon-icon-button>
+        <at-carbon-icon-button id="restoreButton" icon="now:plus" color="gray" on-click="_handleRestoreButtonClick" hidden$="[[!minimized]]"></at-carbon-icon-button>
+        <at-carbon-icon-button id="minimizeButton" icon="now:minus" color="gray" on-click="_handleMinimizeButtonClick" hidden$="[[minimized]]"></at-carbon-icon-button>
       </div>
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" x-offset="-8" y-offset="-24"></at-carbon-menu-button>
       <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
@@ -130,6 +130,11 @@
             value: "bottom"
           }
         ]
+      },
+
+      minimized: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -361,8 +366,7 @@
     },
 
     _handleMinimizeButtonClick: function(event) {
-      this.toggleAttribute('hidden', true, this.$.minimizeButton);
-      this.toggleAttribute('hidden', false, this.$.restoreButton);
+      this.minimized = true;
 
       var data = {
         id: this._card.Id,
@@ -370,7 +374,7 @@
       };
       this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
 
-      this.fire('card-display-size-changed', {
+      this.fire('minimized-changed', {
         value: 'minimized'
       }, {
         bubbles: true
@@ -378,8 +382,7 @@
     },
     
     _handleRestoreButtonClick: function(event) {
-      this.toggleAttribute('hidden', false, this.$.minimizeButton);
-      this.toggleAttribute('hidden', true, this.$.restoreButton);
+      this.minimized = false;
 
       var data = {
         id: this._card.Id,
@@ -387,7 +390,7 @@
       };
       this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
 
-      this.fire('card-display-size-changed', {
+      this.fire('minimized-changed', {
         value: 'normal'
       }, {
         bubbles: true
