@@ -17,6 +17,10 @@
         display: block;
         box-sizing: border-box;
       }
+      
+      :host([hidden]) {
+        display: none !important;
+      }
 
       .card-label {
         @apply --paper-font-subhead;
@@ -135,6 +139,12 @@
       minimized: {
         type: Boolean,
         value: false
+      },
+
+      hide: {
+        type: Boolean,
+        value: false,
+        observer: '_hideChanged'
       }
     },
 
@@ -144,6 +154,10 @@
       xtype: "at-carbon-card-title",
       icon: "now:more"
     }],
+
+    _hideChanged: function(newValue, oldValue) {
+      this.toggleAttribute('hidden', newValue, this);
+    },
 
     _computePosition: function(position) {
       // menu position is the inverse of the title position
