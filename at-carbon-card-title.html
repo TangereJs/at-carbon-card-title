@@ -311,6 +311,15 @@
       });
       }
 
+      var isAdmin = window.Tangere.session.user.Roles.indexOf('Administrator') > -1;
+      if (isAdmin) {
+        menu.push({
+          title: this.T('Configure card'),
+          value: "configure-card",
+          icon: "now:gear",
+        });
+      }
+
       this.$.menuButton.items = menu;
     },
 
@@ -367,6 +376,13 @@
         }
 
         this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
+      }
+
+      if (value == "configure-card") {
+        var configureHref = "/Admin/Contents/Edit/" + this._card.CardId;
+        this.$.link.href = configureHref;
+        this.$.link.label = "Configure Card";
+        this.$.link._handleLink();
       }
 
       this.fire('value-changed', {
