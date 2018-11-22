@@ -311,7 +311,7 @@
       });
       }
 
-      var isAdmin = window.Tangere.session.user.Roles.indexOf('Administrator') > -1;
+      var isAdmin = !!Tangere.session.user.Roles && Tangere.session.user.Roles.indexOf('Administrator') > -1;
       if (isAdmin) {
         menu.push({
           title: this.T('Configure Card'),
