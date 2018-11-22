@@ -60,6 +60,12 @@
     suite('basic', function() {
 
       function assertPropertyValue(el, pName, pValue) {
+        if (pName == "textContent") {
+          var tcValue = el[pName].trim();
+          assert.equal(tcValue, pValue);
+          return;
+        }
+        
         assert.equal(el[pName], pValue);
       }
 
@@ -202,6 +208,7 @@
           assertPropertyValue(el.$.dismissButton, 'icon', iconCancel);
 
           el._card = {};
+          window.Tangere.session.user.Roles = [];
           el._buildMenu();
           var convLinks = [];
           links.forEach(function(link, index){ 
