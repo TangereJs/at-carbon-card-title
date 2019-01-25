@@ -198,7 +198,9 @@
       }
       this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);
 
-      if (this._container == "workplace") {
+      var isMobile = Tangere.session ? Tangere.session.browser.mobile : false;
+
+      if (this._container == "workplace" || isMobile) {
         this.toggleAttribute('hidden', !newValue, this.$.sizeButtonsContainer);
       }
     },
