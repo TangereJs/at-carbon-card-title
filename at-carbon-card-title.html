@@ -212,6 +212,7 @@
       this.label = this._card.Title;
       this._buildMenu();
 
+      // added update timestamp for notifications
       if (this._container == "now") {
         var ts = document.createElement("at-carbon-moment");
         ts.datetime = this._card.UpdateDate;
@@ -220,6 +221,7 @@
         ts.ago=true;
         ts.autoRefreshRate = 10;
         Polymer.dom(ts).classList.add("inline");
+        Polymer.dom(this.$.ago).innerHTML = "";
         Polymer.dom(this.$.ago).appendChild(ts);
       }
 
