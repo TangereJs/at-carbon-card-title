@@ -354,7 +354,7 @@
           id: this._card.UserActions.cardId,
           subscription: false
         };
-        this._apiCall("/api/adenin.GateKeeper.Subscription", data);
+        this._apiCall("service://notificationSubscription", data);
       }
 
       if (value == "customize") {
@@ -379,7 +379,7 @@
           }, { bubbles: true });
         }
 
-        this._apiCall("/session-api/adenin.Now.UserWorkplaceManager/ChangeStatus", data);
+        this._apiCall("service://workplaceChangeStatus", data);
       }
 
       if (value == "configure-card") {
@@ -406,7 +406,7 @@
         id: this._card.Id,
         minimized: true,
       };
-      this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
+      this._apiCall("service://workplaceChangeMinimizedStatus", data);
 
       this.fire('minimized-changed', {
         value: 'minimized'
@@ -422,7 +422,7 @@
         id: this._card.Id,
         minimized: false,
       };
-      this._apiCall("/api/adenin.Now.UserWorkplaceManager/ChangeMinimizedStatus", data);
+      this._apiCall("service://workplaceChangeMinimizedStatus", data);
 
       this.fire('minimized-changed', {
         value: 'normal'
