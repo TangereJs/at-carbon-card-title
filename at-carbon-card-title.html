@@ -196,7 +196,9 @@
       } else {
         this.$.dismissButton.icon = "now:cancel";
       }
-      this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);
+
+      this.toggleAttribute('hidden', !showDismiss, this.$.dismissButton);      
+      if(this._container == "public") this.toggleAttribute('hidden', true, this.$.menuButton);
 
       var isMobile = Tangere.session ? Tangere.session.browser.mobile : false;
 
@@ -207,7 +209,7 @@
 
     actionListener: function(event) {
       var model = event.detail.model.state.model;
-      this._container = model._container;
+      this._container = model._container;      
       this._card = model._card;
       this.label = this._card.Title;
       this._buildMenu();
@@ -383,7 +385,7 @@
       }
 
       if (value == "configure-card") {
-        var configureHref = "/Admin/Contents/Edit/" + this._card.CardId;
+        var configureHref = "/Admin/Contents/Edit/" + this._card.Id;
         this.$.link.href = configureHref;
         this.$.link.label = "Configure Card";
         this.$.link._handleLink();
