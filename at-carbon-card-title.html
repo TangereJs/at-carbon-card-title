@@ -44,7 +44,7 @@
       <div class="layout-flex card-label pl">
         <template is="dom-if" if="[[icon]]">
           <at-carbon-icon icon="[[icon]]" class$="[[iconColor]] prsm"></at-carbon-icon>
-        </template><span id="label">[[label]]</span><span id="ago" class="pl font-caption text-secondary"></span>
+        </template><span id="label"></span><span id="ago" class="pl font-caption text-secondary"></span>
       </div>
       <div id="sizeButtonsContainer" hidden>
         <at-carbon-icon-button id="restoreButton" icon="now:plus" color="gray" on-click="_handleRestoreButtonClick" hidden$="[[!minimized]]"></at-carbon-icon-button>
@@ -75,7 +75,8 @@
       },
       label: {
         type: String,
-        value: ""
+        value: "",
+        observer: '_labelChanged'
       },
       revealed: {
         type: Boolean,
@@ -211,15 +212,8 @@
       var model = event.detail.model.state.model;
       this._container = model._container;      
       this._card = model._card;
-
-      if (this._container != "modal") {
-        this.label = this._card.Title;
-      } else {      
-        // set title on modal
-        this.label = "";
-        this.fire("set-modal-title", { title: this._card.Title }, { bubbles: true, composed: true });
-      }
-      
+      this.label = this._card.Title;
+            
       this._buildMenu();
 
       // added update timestamp for notifications
@@ -247,6 +241,17 @@
         dir: "menu"
       });
     },
+
+    _labelChanged: function (e) {     
+      if (this._container != "modal") {
+        Polymer.dom(this.$.label).innerHTML = this.label;
+      } else {
+        // set title on modal
+        Polymer.dom(this.$.label).innerHTML = "";
+        this.fire("set-modal-title", { title: this.label }, { bubbles: true, composed: true });
+      }
+    },
+
     _menuButtonOpenChanged: function(e) {
       // update active state on container
       if (e.detail) {
