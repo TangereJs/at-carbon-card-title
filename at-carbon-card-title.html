@@ -403,8 +403,8 @@
         this._apiCall("service://workplaceChangeStatus", data);
       }
 
-      if (value == "configure-card") {
-        var configureHref = "/Admin/Contents/Edit/" + this._card.Id;
+      if (value == "configure-card") {        
+        var configureHref = "/Admin/Contents/Edit/" + (this._card.CardId || this._card.Id);
         this.$.link.href = configureHref;
         this.$.link.label = "Configure Card";
         this.$.link._handleLink();
