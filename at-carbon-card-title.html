@@ -30,6 +30,10 @@
         white-space: nowrap;
       }
 
+      .reduceTitleHeight {
+        line-height: 32px !important;
+      }
+
       .menu-button {
         align-self: right;
       }
@@ -41,7 +45,7 @@
 
     </style>
     <div class="layout-horizontal">
-      <div class="layout-flex card-label pl">
+      <div class="layout-flex card-label pl" id="labelContainer">
         <template is="dom-if" if="[[icon]]">
           <at-carbon-icon icon="[[icon]]" class$="[[iconColor]] prsm"></at-carbon-icon>
         </template><span id="label"></span><span id="ago" class="pl font-caption text-secondary"></span>
@@ -245,9 +249,11 @@
     _labelChanged: function (e) {     
       if (this._container != "modal") {
         Polymer.dom(this.$.label).innerHTML = this.label;
+        Polymer.dom(this.$.labelContainer).classList.toggle("reduceTitleHeight", false);
       } else {
         // set title on modal
         Polymer.dom(this.$.label).innerHTML = "";
+        Polymer.dom(this.$.labelContainer).classList.toggle("reduceTitleHeight", true);
         this.fire("set-modal-title", { title: this.label }, { bubbles: true, composed: true });
       }
     },
