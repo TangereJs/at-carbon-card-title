@@ -297,17 +297,20 @@
       }
 
       if (this._card.UserActions.pinnable) {
+       
+        // todo get initial state from backend
+        if (this._pinned == undefined) this._pinned = this._container == "workplace";
 
-        if (this._container == "workplace") {
+        if (this._pinned) {
           menu.push({
-            title: this.T("Unpin from workplace"),
+            title:  this.T("Unpin from workplace"),
             value: "unpin",
             icon: "now:cancel",
             "class": "card-action-unpin"
           });
         } else {
           menu.push({
-            title: this.T("Pin {0} to workplace", this._card.Title),
+            title:this.T("Pin {0} to workplace", this._card.Title),
             value: "pin",
             icon: "now:pin",
             "class": "card-action-pin"
@@ -393,6 +396,8 @@
           id: this._card.UserActions.cardId,
           pinned: value == "pin"
         };
+
+        this._pinned = value == "pin";
 
         if (this._container == "workplace" && value == "unpin") {
           this.fire('workplace-unpin-card', {
