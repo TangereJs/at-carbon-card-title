@@ -44,6 +44,7 @@
       }
 
     </style>
+    <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
     <div class="layout-horizontal">
       <div class="layout-flex card-label pl" id="labelContainer">
         <template is="dom-if" if="[[icon]]">
@@ -57,7 +58,7 @@
       <at-carbon-menu-button id="menuButton" icon="now:more" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]" ></at-carbon-menu-button>
       <at-carbon-icon-button id="dismissButton" icon="now:cancel" color="gray" on-click="_dismiss"></at-carbon-icon-button>
     </div>
-    <at-core-activity id="api" indicator on-response="_apiCallback"></at-core-activity>
+    
     <at-link id="link" style="display:none"></at-link>   
   </template>
 </dom-module>
@@ -283,12 +284,21 @@
       }
 
       if (this._card.UserActions.hasNotifications) {
-        if (this._container == "now") {
-          // *todo* unsubscribe
+
+        // todo get initial state from backend
+        if (this._card.UserActions.subscribed == undefined) this._card.UserActions.subscribed = this._container == "now";
+
+        if (this._card.UserActions.subscribed) {
+          menu.push({
+            title: this.T("Unsubscribe"),
+            value: "unsubscribe",
+            icon: "now:cancel",
+            "class": "card-action-unsubscribe"
+          });
         } else {
           // *todo* don't show unsubscribe when user already subscribed
           menu.push({
-            title: "Subscribe",
+            title: this.T("Subscribe"),
             value: "subscribe",
             icon: "now:alert",
             "class": "card-action-subscribe"
@@ -299,9 +309,9 @@
       if (this._card.UserActions.pinnable) {
        
         // todo get initial state from backend
-        if (this._pinned == undefined) this._pinned = this._container == "workplace";
+        if (this._card.UserActions.pinned == undefined) this._card.UserActions.pinned = this._container == "workplace";
 
-        if (this._pinned) {
+        if (this._card.UserActions.pinned) {
           menu.push({
             title:  this.T("Unpin from workplace"),
             value: "unpin",
@@ -373,12 +383,14 @@
         });
       }
 
-      if (value == "subscribe") {
+      if (value == "subscribe" || value == "unsubscribe") {
         var data = {
           id: this._card.UserActions.cardId,
-          subscription: false
+          subscription: value == "subscribe"
         };
-        this._apiCall("service://notificationSubscription", data);
+
+        this._card.UserActions.subscribed = value == "subscribe";
+        this._apiCall("service://notificationSubscription", data);        
       }
 
       if (value == "customize") {
@@ -397,7 +409,7 @@
           pinned: value == "pin"
         };
 
-        this._pinned = value == "pin";
+        this._card.UserActions.pinned = value == "pin";
 
         if (this._container == "workplace" && value == "unpin") {
           this.fire('workplace-unpin-card', {
