@@ -258,7 +258,7 @@
 
     _menuButtonOpenChanged: function (e) {
 
-      this._buildMenu();
+      if(e.detail.value) this._buildMenu();
 
       // update active state on container
       if (e.detail) {
