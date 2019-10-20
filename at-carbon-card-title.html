@@ -217,10 +217,8 @@
       var model = event.detail.model.state.model;
       this._container = model._container;      
       this._card = model._card;
-      this.label = this._card.Title;
-            
-      this._buildMenu();
-
+      this.label = this._card.Title;         
+      
       // added update timestamp for notifications
       if (this._container == "now") {
         var ts = document.createElement("at-carbon-moment");
@@ -233,8 +231,7 @@
         Polymer.dom(this.$.ago).innerHTML = "";
         Polymer.dom(this.$.ago).appendChild(ts);
       }
-
-
+      
       // trigger modelBind
       this._updateModel(event.detail.model.state.model);
 
@@ -259,7 +256,10 @@
       }
     },
 
-    _menuButtonOpenChanged: function(e) {
+    _menuButtonOpenChanged: function (e) {
+
+      this._buildMenu();
+
       // update active state on container
       if (e.detail) {
         this._revealedChanged(this.revealed);
@@ -283,7 +283,7 @@
         });
       }
 
-      if (this._card.UserActions.hasNotifications) {
+      if (this._card.UserActions.hasNotifications) {               
 
         // todo get initial state from backend
         if (this._card.UserActions.subscribed == undefined) this._card.UserActions.subscribed = this._container == "now";
@@ -326,9 +326,7 @@
             "class": "card-action-pin"
           });
         }
-
       }
-
     
       if (this.customizable) {
         menu.push({
@@ -384,11 +382,12 @@
       }
 
       if (value == "subscribe" || value == "unsubscribe") {
+
         var data = {
           id: this._card.UserActions.cardId,
           subscription: value == "subscribe"
         };
-
+        
         this._card.UserActions.subscribed = value == "subscribe";
         this._apiCall("service://notificationSubscription", data);        
       }
