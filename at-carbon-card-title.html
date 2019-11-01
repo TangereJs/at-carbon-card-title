@@ -129,7 +129,7 @@
 
       position: {
         type: String,
-        value: 'right',
+        value: 'top',
         xtype: 'enum',
         xvaluelist: [{
             title: "Top",
@@ -138,16 +138,7 @@
           {
             title: "Bottom",
             value: "bottom"
-          },
-          {
-            title: "Left",
-            value: "left"
-          },
-          {
-            title: "Right",
-            value: "right"
-          }
-        ]
+          }]
       },
 
       minimized: {
@@ -175,9 +166,11 @@
 
     _computePosition: function(position) {
       // menu position is the inverse of the title position
-      if (position === "bottom") return "topRight";
-      if (position === "top") return "bottomRight";
-      if (position === "left" || position == "right") return position;
+      if (position === "bottom") {
+        return "topRight";
+      }
+
+      return "right";
     },
 
     _apiCall: function(url, data) {
