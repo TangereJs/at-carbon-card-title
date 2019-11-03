@@ -182,8 +182,13 @@
       req.generateRequest();
     },
 
-    _apiCallback: function(e) {
-      // currently not really needed
+    _apiCallback: function (e) {
+
+      if (this._queueMyBoardRefresh) {
+        this._queueMyBoardRefresh = false;
+        Polymer.signal("refresh-my-board");
+      }
+
     },
 
     ready: function() {
@@ -414,6 +419,10 @@
           this.fire('workplace-unpin-card', {
             id: this._card.Id
           }, { bubbles: true });
+        }
+
+        if (this._container != "workplace" && (value == "pin" || value == "unpin")) {
+          this._queueMyBoardRefresh = true; // refresh my board when api call is finished
         }
 
         this._apiCall("service://workplaceChangeStatus", data);
