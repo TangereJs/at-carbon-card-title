@@ -63,8 +63,8 @@
         <at-carbon-icon-button id="minimizeButton" icon="now:minus" color="gray" on-click="_handleMinimizeButtonClick" hidden$="[[minimized]]"></at-carbon-icon-button>
       </div>
       <span id="logo">
-        <template is="dom-if" if="[[logo]]">
-          <img src="[[logo]]" />
+        <template is="dom-if" if="[[_logo]]">
+          <img src="[[_logo]]" />
         </template>
       </span>
         <at-carbon-menu-button id="menuButton" icon="now:more" x-offset="3" color="gray" class="menu-button" on-open-changed="_menuButtonOpenChanged" on-value-changed="_onMenuValueChanged" position="[[_computePosition(position)]]"></at-carbon-menu-button>
@@ -90,9 +90,14 @@
         type: String,
         value: ""
       },
-      logo: {
+      _logo: {
         type: String,
         value: ""
+      },
+      logo: {
+        type: String,
+        value: "",
+        observer: '_logoChanged'
       },
       label: {
         type: String,
@@ -268,6 +273,21 @@
         id: this._card.Id,
         dir: "menu"
       });
+    },
+
+    _logoChanged: function (e) {
+      this._logo = this.logo;      
+      if (this.logo) {
+        // allow to override logo with css variable
+        var segs = this.logo.split("/");
+        if (segs.length) {
+          var file = segs[segs.length - 1];
+          file = file.split(".").join("-");
+          var url = getComputedStyle(document.documentElement).getPropertyValue('--card-logo-' + file + '-url');
+          url = /url\([\"\']?(.*?)[\"\']?\)/.exec(url);
+          if (url) this._logo = url[1];
+        }
+      }
     },
 
     _labelChanged: function (e) {     
