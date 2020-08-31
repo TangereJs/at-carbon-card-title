@@ -235,8 +235,12 @@
 
       var isMobile = Tangere.session ? Tangere.session.browser.mobile : false;
 
-      if (this._container == "workplace" || isMobile) {
+      if (this._container == "workplace" || isMobile ) {
         this.toggleAttribute('hidden', !newValue, this.$.sizeButtonsContainer);
+      }
+
+      if (Tangere.services.version > 1) {
+        this.toggleAttribute('hidden', true, this.$.sizeButtonsContainer);
       }
 
       if (!isMobile) {        
